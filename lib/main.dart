@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:spot_the_bird/bloc/bird_post_cubit.dart';
 import 'package:spot_the_bird/bloc/location_cubit.dart';
-import 'package:spot_the_bird/pages/home_page.dart';
+import 'package:spot_the_bird/pages/map_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,10 +15,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<LocationCubit>(
-      create: (context) => LocationCubit()..getLocation(),
-
-      child: ScreenUtilInit(
+    return MultiBlocProvider(providers: 
+    [
+       BlocProvider<LocationCubit>(
+      create: (context) => LocationCubit()..getLocation()),
+      BlocProvider<BirdPostCubit>(create: (context) => BirdPostCubit(),),
+    ]
+    , child:  ScreenUtilInit(
                 // 👇 базовый размер макета, под который ты верстаешь
         designSize: Size(360, 690),
         minTextAdapt: true,
@@ -32,9 +36,14 @@ class MyApp extends StatelessWidget {
               secondary: Color(0xFFD8D2C2),
             )
           ),
-          home:MapScreen(),
+          home:MapPage(),
         );} 
       ),
-    );
+      ); 
+    
+   
+
+     
+    
   }
 }
